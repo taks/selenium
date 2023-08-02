@@ -40,6 +40,7 @@ namespace OpenQA.Selenium
     public static class SeleniumManager
     {
         private readonly static string binaryFullPath;
+        private static bool hideCommandPromptWindow;
 
         static SeleniumManager()
         {
@@ -77,6 +78,15 @@ namespace OpenQA.Selenium
             {
                 throw new WebDriverException($"Unable to locate or obtain Selenium Manager binary at {binaryFullPath}");
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the command prompt window of the Selenium Manager should be hidden
+        /// </summary>
+        public static bool HideCommandPromptWindow
+        {
+            get { return hideCommandPromptWindow; }
+            set { hideCommandPromptWindow = value; }
         }
 
         /// <summary>
@@ -143,6 +153,7 @@ namespace OpenQA.Selenium
             process.StartInfo.FileName = binaryFullPath;
             process.StartInfo.Arguments = arguments;
             process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = hideCommandPromptWindow;
             process.StartInfo.StandardErrorEncoding = Encoding.UTF8;
             process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
             process.StartInfo.RedirectStandardOutput = true;
